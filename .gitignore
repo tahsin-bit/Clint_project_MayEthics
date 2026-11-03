@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Secrets & Service Accounts
+*serviceaccount*.json
+xenon-*.json
+*.pem
+.env
+.env.*

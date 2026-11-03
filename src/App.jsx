@@ -6,13 +6,14 @@ import FeaturedProduct from './components/FeaturedProduct';
 import Collection from './components/Collection';
 import Features from './components/Features';
 import Lookbook from './components/Lookbook';
-import Newsletter from './components/Newsletter';
 import Footer from './components/Footer';
 import Cart from './components/Cart';
 import Loader from './components/Loader';
 import CursorFollower from './components/CursorFollower';
 import Toast from './components/Toast';
 import CheckoutModal from './components/CheckoutModal';
+import SizeGuideModal from './components/SizeGuideModal';
+import ContactPage from './components/ContactPage';
 
 const PRODUCTS = [
   {
@@ -117,13 +118,40 @@ const COLLECTION = [
 ];
 
 function App() {
-  const [activePage, setActivePage] = useState('home'); // 'home' | 'product'
+  const [activePage, setActivePage] = useState('home'); // 'home' | 'product' | 'contact'
   const [selectedColorIndex, setSelectedColorIndex] = useState(0);
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [sizeGuideOpen, setSizeGuideOpen] = useState(false);
   const [toast, setToast] = useState({ show: false, message: '' });
   const [loading, setLoading] = useState(true);
+  const [isDark, setIsDark] = useState(() => {
+    try {
+      const saved = localStorage.getItem('theme');
+      return saved === 'dark';
+    } catch {
+      return false;
+    }
+  });
+
+  useEffect(() => {
+    try {
+      if (isDark) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('theme', 'light');
+      }
+    } catch {
+      // ignore localStorage errors
+    }
+  }, [isDark]);
+
+  const toggleTheme = useCallback(() => {
+    setIsDark(prev => !prev);
+  }, []);
 
   const showToast = useCallback((message) => {
     setToast({ show: true, message });
@@ -184,10 +212,12 @@ function App() {
 
   const handleBackToHome = useCallback(() => {
     setActivePage('home');
-    setTimeout(() => {
-      const el = document.getElementById('collection');
-      if (el) el.scrollIntoView({ behavior: 'smooth' });
-    }, 50);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
+
+  const handleOpenContact = useCallback(() => {
+    setActivePage('contact');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, []);
 
   const cartTotal = cart.reduce((sum, item) => sum + item.price * item.qty, 0);
@@ -200,11 +230,16 @@ function App() {
       <Navbar
         cartCount={cartCount}
         onCartOpen={() => setCartOpen(true)}
-        onNavigateHome={() => setActivePage('home')}
+        onNavigateHome={handleBackToHome}
+        onOpenContact={handleOpenContact}
+        isDark={isDark}
+        onToggleTheme={toggleTheme}
       />
       
       <main>
-        {activePage === 'product' ? (
+        {activePage === 'contact' ? (
+          <ContactPage onBackToHome={handleBackToHome} />
+        ) : activePage === 'product' ? (
           <div className="product-page-wrapper">
             <FeaturedProduct
               product={PRODUCTS[0]}
@@ -220,12 +255,38 @@ function App() {
             <Collection items={COLLECTION} onSelectProduct={handleSelectProduct} />
             <Features />
             <Lookbook />
-            <Newsletter />
           </>
         )}
       </main>
 
-      <Footer />
+      <Footer
+        onNavigateHome={handleBackToHome}
+        onOpenSizeGuide={() => setSizeGuideOpen(true)}
+        onOpenContact={handleOpenContact}
+      />
+      {/* Floating Sticky Cart Button (only shows when cart has items) */}
+      {cartCount > 0 && (
+        <button
+          className="floating-cart-btn"
+          onClick={() => setCartOpen(true)}
+          aria-label="View Cart"
+          title="View Cart"
+        >
+          <span className="floating-cart-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 01-8 0" />
+            </svg>
+            <span className="floating-cart-badge">{cartCount}</span>
+          </span>
+          <span className="floating-cart-text">View Cart</span>
+          {cartTotal > 0 && (
+            <span className="floating-cart-amount">৳{cartTotal.toLocaleString()}</span>
+          )}
+        </button>
+      )}
+
       <Cart
         open={cartOpen}
         onClose={() => setCartOpen(false)}
@@ -241,6 +302,10 @@ function App() {
         items={cart}
         total={cartTotal}
         onOrderSuccess={handleOrderSuccess}
+      />
+      <SizeGuideModal
+        open={sizeGuideOpen}
+        onClose={() => setSizeGuideOpen(false)}
       />
       <Toast show={toast.show} message={toast.message} />
     </>
