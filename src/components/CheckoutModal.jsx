@@ -49,6 +49,11 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
   const isFullDigitalPayment = ['bkash', 'nagad', 'rocket'].includes(formData.paymentMethod);
   const isCodWithAdvance = isOutsideDhaka && formData.paymentMethod === 'cod';
 
+  // Transaction ID is STRICTLY required if:
+  // 1. Outside Dhaka (either COD advance fee OR full digital payment)
+  // 2. Inside Dhaka with digital payment (bKash / Nagad / Rocket)
+  const isTrxIdRequired = isOutsideDhaka || isFullDigitalPayment;
+
   // Which payment number/instructions to show
   const activeMethodKey = isFullDigitalPayment ? formData.paymentMethod : (isCodWithAdvance ? formData.advanceMethod : null);
   const activePayment = activeMethodKey ? PAYMENT_INFO[activeMethodKey] : null;
@@ -107,12 +112,17 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if ((isFullDigitalPayment || isCodWithAdvance) && !formData.transactionId.trim()) {
-      alert(isCodWithAdvance 
-        ? 'ঢাকার বাইরে ক্যাশ অন ডেলিভারিতে ১৩০ টাকা ডেলিভারি চার্জ অগ্রিম দিতে হবে। অনুগ্রহ করে Transaction ID (TrxID) দিন।' 
-        : 'Please enter your payment Transaction ID (TrxID)');
+
+    // Check mandatory Transaction ID
+    if (isTrxIdRequired && !formData.transactionId.trim()) {
+      if (isCodWithAdvance) {
+        alert('ঢাকার বাইরে ডেলিভারি চার্জ ১৩০ টাকা অগ্রিম পরিশোধের Transaction ID (TrxID) দেওয়া বাধ্যতামূলক। TrxID না দিলে অর্ডার কনফার্ম করা যাবে না।');
+      } else {
+        alert(`পেমেন্ট নিশ্চিত করতে আপনার ${getPaymentLabel(formData.paymentMethod)} Transaction ID (TrxID) দিন। TrxID না দিলে অর্ডার সম্পন্ন হবে না।`);
+      }
       return;
     }
+
     setIsSubmitting(true);
 
     const generatedId = 'ME-' + Math.floor(100000 + Math.random() * 900000);
