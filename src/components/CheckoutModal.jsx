@@ -77,10 +77,20 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
       return;
     }
 
-    if (cleanCode === 'mayethics-01') {
+    // Promo codes: mayethics20, mayethics30, mayethics40 -> all give 20% DISCOUNT
+    const valid20PercentCodes = ['mayethics20', 'mayethics30', 'mayethics40'];
+
+    if (valid20PercentCodes.includes(cleanCode)) {
+      setAppliedPromo({
+        code: cleanCode,
+        discountPercent: 0.20, // 20% discount
+        label: '20% OFF',
+      });
+      setPromoError('');
+    } else if (cleanCode === 'mayethics-01') {
       setAppliedPromo({
         code: 'mayethics-01',
-        discountPercent: 0.1, // 10% discount
+        discountPercent: 0.10, // 10% discount
         label: '10% OFF',
       });
       setPromoError('');
@@ -468,7 +478,7 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
                   <div className="promo-input-row">
                     <input
                       type="text"
-                      placeholder="e.g. mayethics-01"
+                      placeholder="e.g. mayethics20"
                       value={promoCode}
                       onChange={(e) => {
                         setPromoCode(e.target.value);
