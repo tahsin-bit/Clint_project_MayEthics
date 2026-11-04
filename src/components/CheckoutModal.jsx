@@ -478,7 +478,7 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
                   <div className="promo-input-row">
                     <input
                       type="text"
-                      placeholder="e.g. mayethics20"
+                      placeholder="Enter promo code"
                       value={promoCode}
                       onChange={(e) => {
                         setPromoCode(e.target.value);
