@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default function Navbar({ cartCount, onCartOpen, onNavigateHome, onOpenContact, isDark, onToggleTheme }) {
+export default function Navbar({ cartCount, onCartOpen, onNavigateHome, onOpenContact, onOpenSizeGuide, isDark, onToggleTheme }) {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -47,6 +47,18 @@ export default function Navbar({ cartCount, onCartOpen, onNavigateHome, onOpenCo
           <li><a href="#collection" onClick={e => handleNavClick(e, 'collection')}>Collection</a></li>
           <li><a href="#lookbook" onClick={e => handleNavClick(e, 'lookbook')}>Lookbook</a></li>
           <li><a href="#about" onClick={e => handleNavClick(e, 'about')}>About</a></li>
+          <li>
+            <a
+              href="#size-guide"
+              onClick={(e) => {
+                e.preventDefault();
+                setMobileOpen(false);
+                if (onOpenSizeGuide) onOpenSizeGuide();
+              }}
+            >
+              Size Guide
+            </a>
+          </li>
           <li>
             <a
               href="#contact"
@@ -118,6 +130,16 @@ export default function Navbar({ cartCount, onCartOpen, onNavigateHome, onOpenCo
         <a href="#collection" onClick={e => handleNavClick(e, 'collection')}>Collection</a>
         <a href="#lookbook" onClick={e => handleNavClick(e, 'lookbook')}>Lookbook</a>
         <a href="#about" onClick={e => handleNavClick(e, 'about')}>About</a>
+        <a
+          href="#size-guide"
+          onClick={(e) => {
+            e.preventDefault();
+            setMobileOpen(false);
+            if (onOpenSizeGuide) onOpenSizeGuide();
+          }}
+        >
+          Size Guide
+        </a>
         <a
           href="#contact"
           onClick={(e) => {

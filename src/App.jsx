@@ -232,6 +232,7 @@ function App() {
         onCartOpen={() => setCartOpen(true)}
         onNavigateHome={handleBackToHome}
         onOpenContact={handleOpenContact}
+        onOpenSizeGuide={() => setSizeGuideOpen(true)}
         isDark={isDark}
         onToggleTheme={toggleTheme}
       />
@@ -252,7 +253,11 @@ function App() {
           <>
             <Hero />
             <Marquee />
-            <Collection items={COLLECTION} onSelectProduct={handleSelectProduct} />
+            <Collection
+              items={COLLECTION}
+              onSelectProduct={handleSelectProduct}
+              onOpenSizeGuide={() => setSizeGuideOpen(true)}
+            />
             <Features />
             <Lookbook />
           </>
