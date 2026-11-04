@@ -2595,15 +2595,16 @@ a.nav-logo:hover img {
   border-color: var(--sage);
 }
 
-/* Advance Notice Box (Outside Dhaka COD) */
+/* Advance Notice Box (Outside Dhaka COD) - Minimal & High-End */
 .advance-notice-box {
-  background: var(--sage-tint);
-  border: 1px solid var(--sage);
-  border-radius: 8px;
-  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-medium);
+  border-left: 3px solid var(--sage);
+  border-radius: 6px;
+  padding: 16px 18px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   animation: fadeIn 0.3s ease;
 }
 
@@ -2616,18 +2617,19 @@ a.nav-logo:hover img {
 .advance-notice-badge {
   background: var(--sage);
   color: var(--bg-primary);
-  font-size: 0.68rem;
+  font-size: 0.65rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1.5px;
-  padding: 3px 8px;
-  border-radius: 3px;
+  padding: 2px 7px;
+  border-radius: 2px;
 }
 
 .advance-notice-header h4 {
   font-family: var(--font-heading);
   font-size: 0.88rem;
   font-weight: 700;
+  letter-spacing: 0.5px;
   color: var(--text-primary);
   margin: 0;
 }
@@ -2635,7 +2637,7 @@ a.nav-logo:hover img {
 .advance-notice-desc {
   font-size: 0.82rem;
   color: var(--text-secondary);
-  line-height: 1.5;
+  line-height: 1.6;
   margin: 0;
 }
 
@@ -2646,7 +2648,7 @@ a.nav-logo:hover img {
 .advance-select-row {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 10px;
   margin-top: 4px;
 }
 
@@ -2658,41 +2660,91 @@ a.nav-logo:hover img {
   color: var(--text-muted);
 }
 
-.advance-method-pills {
-  display: flex;
+.advance-method-selector {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  flex-wrap: wrap;
 }
 
-.advance-pill {
-  display: inline-flex;
+@media (max-width: 480px) {
+  .advance-method-selector {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+}
+
+.advance-channel-card {
+  display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  border-radius: 20px;
-  border: 1px solid var(--border-medium);
-  background: var(--bg-card);
-  color: var(--text-primary);
-  font-size: 0.82rem;
-  font-weight: 600;
+  gap: 10px;
+  padding: 10px 14px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: 4px;
   cursor: pointer;
   transition: all 0.25s ease;
 }
 
-.advance-pill:hover {
-  transform: translateY(-2px);
+.advance-channel-card:hover {
+  border-color: var(--border-medium);
+  background: var(--bg-elevated);
+}
+
+.advance-channel-card.selected {
+  border-color: var(--sage);
+  background: var(--sage-tint);
+}
+
+.channel-radio {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.channel-radio-circle {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border-medium);
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.advance-channel-card.selected .channel-radio-circle {
   border-color: var(--sage);
 }
 
-.advance-pill.active {
-  border-width: 1.5px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+.channel-radio-circle.checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sage);
 }
 
-.advance-pill .pill-dot {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
+.channel-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.channel-name {
+  font-family: var(--font-heading);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  letter-spacing: 0.5px;
+}
+
+.channel-sub {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
 }
 
 .advance-breakdown-row {

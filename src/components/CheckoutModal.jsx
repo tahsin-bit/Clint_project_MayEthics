@@ -338,28 +338,34 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
               {isCodWithAdvance && (
                 <div className="advance-notice-box">
                   <div className="advance-notice-header">
-                    <span className="advance-notice-badge">Notice</span>
-                    <h4>ঢাকার বাইরে ক্যাশ অন ডেলিভারিতে ৳১৩০ অগ্রিম প্রযোজ্য</h4>
+                    <span className="advance-notice-badge">Policy</span>
+                    <h4>Outside Dhaka Advance Delivery Fee</h4>
                   </div>
                   <p className="advance-notice-desc">
-                    ঢাকার বাইরে পার্সেল নিশ্চিত করতে ডেলিভারি চার্জ <strong>৳১৩০ অগ্রিম</strong> পরিশোধ করতে হবে। বাকি <strong>৳{dueOnDelivery.toLocaleString()}</strong> পণ্য হাতে পেয়ে ক্যাশ অন ডেলিভারিতে পরিশোধ করবেন।
+                    To prevent unverified shipments, delivery charge of <strong>৳130</strong> is required in advance. The remaining <strong>৳{dueOnDelivery.toLocaleString()}</strong> will be paid via Cash on Delivery upon arrival.
                   </p>
 
                   <div className="advance-select-row">
-                    <label>অগ্রিম প্রদানের মাধ্যম বেছে নিন:</label>
-                    <div className="advance-method-pills">
-                      {['bkash', 'nagad', 'rocket'].map((method) => (
-                        <button
-                          key={method}
-                          type="button"
-                          className={`advance-pill ${formData.advanceMethod === method ? 'active' : ''}`}
-                          style={{ borderColor: formData.advanceMethod === method ? PAYMENT_INFO[method].color : undefined }}
-                          onClick={() => setFormData({ ...formData, advanceMethod: method, transactionId: '' })}
-                        >
-                          <span className="pill-dot" style={{ backgroundColor: PAYMENT_INFO[method].color }} />
-                          {PAYMENT_INFO[method].name}
-                        </button>
-                      ))}
+                    <label>Select Advance Payment Channel:</label>
+                    <div className="advance-method-selector">
+                      {['bkash', 'nagad', 'rocket'].map((method) => {
+                        const isSelected = formData.advanceMethod === method;
+                        return (
+                          <div
+                            key={method}
+                            className={`advance-channel-card ${isSelected ? 'selected' : ''}`}
+                            onClick={() => setFormData({ ...formData, advanceMethod: method, transactionId: '' })}
+                          >
+                            <div className="channel-radio">
+                              <span className={`channel-radio-circle ${isSelected ? 'checked' : ''}`} />
+                            </div>
+                            <div className="channel-info">
+                              <span className="channel-name">{PAYMENT_INFO[method].name}</span>
+                              <span className="channel-sub">{PAYMENT_INFO[method].type}</span>
+                            </div>
+                          </div>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
@@ -374,7 +380,7 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
                     </span>
                     <span className="payment-guide-note">
                       {isCodWithAdvance 
-                        ? `ডেলিভারি চার্জ অগ্রিম ৳১৩০ নিচের ${activePayment.name} পার্সোনাল নাম্বারে Send Money করুন:`
+                        ? `Send advance delivery fee of ৳130 to our personal ${activePayment.name} number:`
                         : activePayment.instructions}
                     </span>
                   </div>
@@ -395,7 +401,7 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
 
                   <div className="form-group trx-input-group">
                     <label>
-                      {isCodWithAdvance ? 'ডেলিভারি চার্জ পেমেন্টের Transaction ID (TrxID) *' : 'Transaction ID (TrxID) *'}
+                      {isCodWithAdvance ? 'Advance Payment Transaction ID (TrxID) *' : 'Transaction ID (TrxID) *'}
                     </label>
                     <input
                       type="text"
@@ -407,7 +413,7 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
                     <small className="trx-hint">
                       {isCodWithAdvance ? (
                         <>
-                          উপরের নাম্বারে অগ্রিম <strong>৳১৩০</strong> পাঠিয়ে ট্রানজেকশন আইডি এখানে লিখুন। ডেলিভারির সময় বাকি <strong>৳{dueOnDelivery.toLocaleString()}</strong> পরিশোধ করবেন।
+                          Send <strong>৳130</strong> advance to the number above and enter TrxID. Remaining <strong>৳{dueOnDelivery.toLocaleString()}</strong> is payable upon delivery.
                         </>
                       ) : (
                         <>
