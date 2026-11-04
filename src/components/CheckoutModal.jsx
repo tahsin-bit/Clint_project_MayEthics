@@ -42,6 +42,7 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [orderComplete, setOrderComplete] = useState(false);
   const [orderId, setOrderId] = useState('');
+  const [completedOrderSnapshot, setCompletedOrderSnapshot] = useState(null);
 
   if (!open) return null;
 
@@ -164,6 +165,24 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
       console.error('Failed to post order to Google Sheets:', err);
     }
 
+    const snapshot = {
+      orderId: generatedId,
+      items: [...items],
+      totalItemsCount: items.reduce((s, i) => s + i.qty, 0),
+      totalAmount: grandTotal,
+      discountAmount: discountAmount,
+      appliedPromo: appliedPromo ? { ...appliedPromo } : null,
+      paymentMethod: formData.paymentMethod,
+      advanceMethod: formData.advanceMethod,
+      isCodWithAdvance: isCodWithAdvance,
+      isFullDigitalPayment: isFullDigitalPayment,
+      transactionId: formData.transactionId,
+      dueOnDelivery: dueOnDelivery,
+      paymentLabel: paymentLabel,
+      phone: formData.phone,
+    };
+    setCompletedOrderSnapshot(snapshot);
+
     setOrderId(generatedId);
     setIsSubmitting(false);
     setOrderComplete(true);
@@ -172,6 +191,7 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
 
   const handleClose = () => {
     setOrderComplete(false);
+    setCompletedOrderSnapshot(null);
     onClose();
   };
 
@@ -193,21 +213,21 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
           <div className="checkout-success-view">
             <div className="checkout-success-icon">✓</div>
             <h2>Order Placed Successfully!</h2>
-            <p className="order-id-badge">Order ID: <span>{orderId}</span></p>
+            <p className="order-id-badge">Order ID: <span>{completedOrderSnapshot?.orderId || orderId}</span></p>
             <p className="order-success-desc">
               Thank you for ordering with <strong>MayEthics</strong>. We have received your order 
-              and our support team will contact you shortly on <strong>{formData.phone}</strong> for confirmation.
+              and our support team will contact you shortly on <strong>{completedOrderSnapshot?.phone || formData.phone}</strong> for confirmation.
             </p>
 
             <div className="order-summary-box">
               <div className="summary-row">
                 <span>Items Ordered:</span>
-                <span>{items.reduce((s, i) => s + i.qty, 0)} pcs</span>
+                <span>{completedOrderSnapshot ? completedOrderSnapshot.totalItemsCount : items.reduce((s, i) => s + i.qty, 0)} pcs</span>
               </div>
 
               {/* Ordered Items Details (Color & Size) */}
               <div className="checkout-items-list">
-                {items.map((item, idx) => (
+                {(completedOrderSnapshot ? completedOrderSnapshot.items : items).map((item, idx) => (
                   <div key={idx} className="checkout-item-mini">
                     {item.image && (
                       <img src={item.image} alt={item.name} className="checkout-item-img" />
@@ -228,30 +248,42 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
               <div className="summary-row">
                 <span>Payment Mode:</span>
                 <span className="summary-val uppercase">
-                  {isCodWithAdvance ? `COD (Advance ৳130 Paid via ${PAYMENT_INFO[formData.advanceMethod]?.name})` : getPaymentLabel(formData.paymentMethod)}
+                  {completedOrderSnapshot
+                    ? (completedOrderSnapshot.isCodWithAdvance
+                        ? `COD (Advance ৳130 Paid via ${PAYMENT_INFO[completedOrderSnapshot.advanceMethod]?.name})`
+                        : getPaymentLabel(completedOrderSnapshot.paymentMethod))
+                    : (isCodWithAdvance ? `COD (Advance ৳130 Paid via ${PAYMENT_INFO[formData.advanceMethod]?.name})` : getPaymentLabel(formData.paymentMethod))}
                 </span>
               </div>
-              {appliedPromo && (
+              {(completedOrderSnapshot?.appliedPromo || appliedPromo) && (
                 <div className="summary-row">
                   <span>Promo Code Applied:</span>
-                  <span className="summary-val font-mono uppercase">{appliedPromo.code} (-৳{discountAmount.toLocaleString()})</span>
+                  <span className="summary-val font-mono uppercase">
+                    {(completedOrderSnapshot?.appliedPromo || appliedPromo).code} (-৳{(completedOrderSnapshot?.discountAmount ?? discountAmount).toLocaleString()})
+                  </span>
                 </div>
               )}
-              {(isFullDigitalPayment || isCodWithAdvance) && formData.transactionId && (
+              {((completedOrderSnapshot?.isFullDigitalPayment || completedOrderSnapshot?.isCodWithAdvance) || (isFullDigitalPayment || isCodWithAdvance)) && (completedOrderSnapshot?.transactionId || formData.transactionId) && (
                 <div className="summary-row">
                   <span>Transaction ID:</span>
-                  <span className="summary-val font-mono">{formData.transactionId.toUpperCase()}</span>
+                  <span className="summary-val font-mono">
+                    {(completedOrderSnapshot?.transactionId || formData.transactionId).toUpperCase()}
+                  </span>
                 </div>
               )}
-              {isCodWithAdvance && (
+              {((completedOrderSnapshot?.isCodWithAdvance) ?? isCodWithAdvance) && (
                 <div className="summary-row">
                   <span>Remaining Due on Delivery:</span>
-                  <span className="summary-val font-bold">৳{dueOnDelivery.toLocaleString()}</span>
+                  <span className="summary-val font-bold">
+                    ৳{((completedOrderSnapshot?.dueOnDelivery) ?? dueOnDelivery).toLocaleString()}
+                  </span>
                 </div>
               )}
               <div className="summary-row total-row">
                 <span>Total Amount:</span>
-                <span className="total-accent">৳{grandTotal.toLocaleString()}</span>
+                <span className="total-accent">
+                  ৳{((completedOrderSnapshot?.totalAmount) ?? grandTotal).toLocaleString()}
+                </span>
               </div>
             </div>
 
