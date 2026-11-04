@@ -143,7 +143,7 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
       : getPaymentLabel(formData.paymentMethod);
 
     try {
-      await fetch('https://script.google.com/macros/s/AKfycbyCV81LAVGpNedA7Pmkq6NaYOnYtjID1pCUQJbFD0qJQNb3k6sJIbeM5ovehSx0JJTBIw/exec', {
+      await fetch('https://script.google.com/macros/s/AKfycbwR8Z7X9FhrxISXTfbo0xX0sp9UxdED561GORDJHGyjrD6nlNXt4x_ZQuMbhkmFeIJZvQ/exec', {
         method: 'POST',
         mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
