@@ -33,7 +33,16 @@ export default function Collection({ items, onSelectProduct }) {
             </div>
             <div className="collection-card-info">
               <h3 className="collection-card-name">{item.name}</h3>
-              <p className="collection-card-price">৳{item.price.toLocaleString()}</p>
+              <div className="collection-card-price-wrap">
+                {item.originalPrice && (
+                  <span className="collection-card-original-price">
+                    ৳{item.originalPrice.toLocaleString()}
+                  </span>
+                )}
+                <span className="collection-card-price">
+                  ৳{item.price.toLocaleString()}
+                </span>
+              </div>
             </div>
             <div className="collection-card-overlay">
               <button onClick={(e) => {

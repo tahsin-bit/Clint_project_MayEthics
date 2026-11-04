@@ -1089,16 +1089,34 @@ a.nav-logo:hover img {
 
 .product-price {
   font-family: var(--font-heading);
-  font-size: 1.8rem;
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.product-original-price {
+  font-size: 1.3rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-decoration: line-through;
+  opacity: 0.75;
+}
+
+.product-original-price .currency {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.product-current-price {
+  font-size: 1.9rem;
   font-weight: 700;
   color: var(--sage);
 }
 
 .product-price .currency {
-  font-size: 1rem;
+  font-size: 1.1rem;
   font-weight: 400;
-  color: var(--text-secondary);
-  margin-right: 4px;
+  margin-right: 2px;
 }
 
 .product-description {
@@ -1438,10 +1456,24 @@ a.nav-logo:hover img {
   margin-bottom: 8px;
 }
 
+.collection-card-price-wrap {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.collection-card-original-price {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  text-decoration: line-through;
+  font-weight: 500;
+  opacity: 0.8;
+}
+
 .collection-card-price {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   color: var(--sage);
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .collection-card-colors {

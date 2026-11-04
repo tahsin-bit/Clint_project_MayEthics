@@ -88,7 +88,14 @@ export default function FeaturedProduct({ product, onAddToCart, onBack, onOpenSi
         <div className="product-details">
           <h3 className="product-name">{product.name}</h3>
           <div className="product-price">
-            <span className="currency">৳</span>{product.price.toLocaleString()}
+            {product.originalPrice && (
+              <span className="product-original-price">
+                <span className="currency">৳</span>{product.originalPrice.toLocaleString()}
+              </span>
+            )}
+            <span className="product-current-price">
+              <span className="currency">৳</span>{product.price.toLocaleString()}
+            </span>
           </div>
           <p className="product-description">{product.description}</p>
 
