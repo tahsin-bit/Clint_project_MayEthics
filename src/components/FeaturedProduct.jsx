@@ -183,15 +183,6 @@ export default function FeaturedProduct({ product, onAddToCart, onBack, onOpenSi
           <div className="product-meta">
             <div className="product-meta-item">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <rect x="1" y="3" width="15" height="13" />
-                <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
-                <circle cx="5.5" cy="18.5" r="2.5" />
-                <circle cx="18.5" cy="18.5" r="2.5" />
-              </svg>
-              Free Delivery
-            </div>
-            <div className="product-meta-item">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <polyline points="17 1 21 5 17 9" />
                 <path d="M3 11V9a4 4 0 014-4h14" />
                 <polyline points="7 23 3 19 7 15" />
