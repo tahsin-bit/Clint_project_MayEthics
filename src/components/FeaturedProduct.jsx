@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useScrollReveal } from '../hooks';
 
-export default function FeaturedProduct({ product, onAddToCart, onBack, initialColor = 0 }) {
+export default function FeaturedProduct({ product, onAddToCart, onBack, onOpenSizeGuide, initialColor = 0 }) {
   const [selectedColor, setSelectedColor] = useState(initialColor);
   const [selectedSize, setSelectedSize] = useState(2); // default L
   const [quantity, setQuantity] = useState(1);
@@ -113,8 +113,21 @@ export default function FeaturedProduct({ product, onAddToCart, onBack, initialC
 
           {/* Size selector */}
           <div className="selector-group">
-            <div className="selector-label">
-              Size — <span>{product.sizes[selectedSize]}</span>
+            <div className="selector-label selector-label-row">
+              <span>Size — <span>{product.sizes[selectedSize]}</span></span>
+              {onOpenSizeGuide && (
+                <button
+                  type="button"
+                  className="product-size-guide-inline-btn"
+                  onClick={onOpenSizeGuide}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
+                    <path d="M22 12A10 10 0 0 0 12 2v10z" />
+                  </svg>
+                  <span>Size Guide & Chart</span>
+                </button>
+              )}
             </div>
             <div className="size-options">
               {product.sizes.map((size, i) => (

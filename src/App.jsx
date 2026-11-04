@@ -246,6 +246,7 @@ function App() {
               product={PRODUCTS[0]}
               onAddToCart={addToCart}
               onBack={handleBackToHome}
+              onOpenSizeGuide={() => setSizeGuideOpen(true)}
               initialColor={selectedColorIndex}
             />
           </div>
@@ -256,7 +257,6 @@ function App() {
             <Collection
               items={COLLECTION}
               onSelectProduct={handleSelectProduct}
-              onOpenSizeGuide={() => setSizeGuideOpen(true)}
             />
             <Features />
             <Lookbook />

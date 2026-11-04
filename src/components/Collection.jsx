@@ -1,6 +1,6 @@
 import { useScrollReveal } from '../hooks';
 
-export default function Collection({ items, onSelectProduct, onOpenSizeGuide }) {
+export default function Collection({ items, onSelectProduct }) {
   const sectionRef = useScrollReveal(0.1);
 
   return (
@@ -12,22 +12,6 @@ export default function Collection({ items, onSelectProduct, onOpenSizeGuide }) 
           Five distinctive colors. One iconic silhouette. 
           Tap any card to view detailed specifications and place an order.
         </p>
-
-        {onOpenSizeGuide && (
-          <div className="collection-actions-bar">
-            <button
-              className="collection-size-guide-btn"
-              onClick={onOpenSizeGuide}
-              type="button"
-            >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21.21 15.89A10 10 0 1 1 8 2.83" />
-                <path d="M22 12A10 10 0 0 0 12 2v10z" />
-              </svg>
-              <span>Size Guide & Chart</span>
-            </button>
-          </div>
-        )}
       </div>
 
       <div className="collection-grid">

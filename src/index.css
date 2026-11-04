@@ -1307,42 +1307,40 @@ a.nav-logo:hover img {
   margin: 0 auto;
 }
 
-.collection-actions-bar {
+.selector-label-row {
   display: flex;
-  justify-content: center;
-  margin-top: 24px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
 }
 
-.collection-size-guide-btn {
+.product-size-guide-inline-btn {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 22px;
-  border-radius: 30px;
-  border: 1px solid var(--border-medium);
-  background: var(--bg-card);
-  color: var(--text-primary);
-  font-family: var(--font-heading);
-  font-size: 0.82rem;
-  font-weight: 600;
-  letter-spacing: 1px;
-  cursor: pointer;
-  transition: all 0.3s var(--ease-out-expo);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-}
-
-.collection-size-guide-btn:hover {
-  border-color: var(--sage);
+  gap: 6px;
+  background: none;
+  border: none;
   color: var(--sage);
-  background: var(--sage-tint);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(83, 117, 82, 0.15);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: all 0.2s ease;
 }
 
-.collection-size-guide-btn svg {
-  width: 17px;
-  height: 17px;
-  stroke: var(--sage);
+.product-size-guide-inline-btn:hover {
+  color: var(--sage-dark);
+  background: var(--sage-tint);
+}
+
+.product-size-guide-inline-btn svg {
+  width: 15px;
+  height: 15px;
+  stroke: currentColor;
 }
 
 .collection-grid {
