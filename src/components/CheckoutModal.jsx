@@ -106,10 +106,12 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
     const generatedId = 'ME-' + Math.floor(100000 + Math.random() * 900000);
 
     try {
-      await fetch('/api/orders', {
+      await fetch('https://script.google.com/macros/s/AKfycbyCV81LAVGpNedA7Pmkq6NaYOnYtjID1pCUQJbFD0qJQNb3k6sJIbeM5ovehSx0JJTBIw/exec', {
         method: 'POST',
+        mode: 'no-cors',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          type: 'order',
           orderId: generatedId,
           name: formData.name,
           phone: formData.phone,
