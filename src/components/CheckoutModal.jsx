@@ -32,6 +32,7 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
     city: 'Dhaka',
     notes: '',
     paymentMethod: 'cod', // 'cod' | 'bkash' | 'nagad' | 'rocket'
+    advanceMethod: 'bkash', // 'bkash' | 'nagad' | 'rocket' (used for advance fee outside dhaka)
     transactionId: '',
   });
   const [copied, setCopied] = useState(false);
@@ -44,13 +45,22 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
 
   if (!open) return null;
 
-  const isDigitalPayment = ['bkash', 'nagad', 'rocket'].includes(formData.paymentMethod);
-  const activePayment = isDigitalPayment ? PAYMENT_INFO[formData.paymentMethod] : null;
+  const isOutsideDhaka = formData.city === 'Outside Dhaka';
+  const isFullDigitalPayment = ['bkash', 'nagad', 'rocket'].includes(formData.paymentMethod);
+  const isCodWithAdvance = isOutsideDhaka && formData.paymentMethod === 'cod';
+
+  // Which payment number/instructions to show
+  const activeMethodKey = isFullDigitalPayment ? formData.paymentMethod : (isCodWithAdvance ? formData.advanceMethod : null);
+  const activePayment = activeMethodKey ? PAYMENT_INFO[activeMethodKey] : null;
 
   const deliveryCharge = formData.city === 'Dhaka' ? 80 : 130;
   const discountAmount = appliedPromo ? Math.round(total * appliedPromo.discountPercent) : 0;
   const discountedSubtotal = Math.max(0, total - discountAmount);
   const grandTotal = discountedSubtotal + (discountedSubtotal >= 3000 ? 0 : deliveryCharge);
+
+  // If outside Dhaka & COD, customer pays 130 BDT in advance, remaining on delivery
+  const advanceRequiredAmount = isCodWithAdvance ? 130 : 0;
+  const dueOnDelivery = isCodWithAdvance ? Math.max(0, grandTotal - 130) : 0;
 
   const handleApplyPromo = (e) => {
     e.preventDefault();
@@ -97,13 +107,19 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isDigitalPayment && !formData.transactionId.trim()) {
-      alert('Please enter your payment Transaction ID (TrxID)');
+    if ((isFullDigitalPayment || isCodWithAdvance) && !formData.transactionId.trim()) {
+      alert(isCodWithAdvance 
+        ? 'ঢাকার বাইরে ক্যাশ অন ডেলিভারিতে ১৩০ টাকা ডেলিভারি চার্জ অগ্রিম দিতে হবে। অনুগ্রহ করে Transaction ID (TrxID) দিন।' 
+        : 'Please enter your payment Transaction ID (TrxID)');
       return;
     }
     setIsSubmitting(true);
 
     const generatedId = 'ME-' + Math.floor(100000 + Math.random() * 900000);
+
+    const paymentLabel = isCodWithAdvance
+      ? `COD (Advance Paid ৳130 via ${PAYMENT_INFO[formData.advanceMethod]?.name}, Due on Delivery: ৳${dueOnDelivery})`
+      : getPaymentLabel(formData.paymentMethod);
 
     try {
       await fetch('https://script.google.com/macros/s/AKfycbyCV81LAVGpNedA7Pmkq6NaYOnYtjID1pCUQJbFD0qJQNb3k6sJIbeM5ovehSx0JJTBIw/exec', {
@@ -118,8 +134,8 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
           address: formData.address,
           city: formData.city,
           notes: formData.notes,
-          paymentMethod: getPaymentLabel(formData.paymentMethod),
-          transactionId: formData.transactionId,
+          paymentMethod: paymentLabel,
+          transactionId: formData.transactionId || 'N/A',
           items: items,
           total: grandTotal,
         }),
@@ -191,7 +207,9 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
 
               <div className="summary-row">
                 <span>Payment Mode:</span>
-                <span className="summary-val uppercase">{getPaymentLabel(formData.paymentMethod)}</span>
+                <span className="summary-val uppercase">
+                  {isCodWithAdvance ? `COD (Advance ৳130 Paid via ${PAYMENT_INFO[formData.advanceMethod]?.name})` : getPaymentLabel(formData.paymentMethod)}
+                </span>
               </div>
               {appliedPromo && (
                 <div className="summary-row">
@@ -199,10 +217,16 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
                   <span className="summary-val font-mono uppercase">{appliedPromo.code} (-৳{discountAmount.toLocaleString()})</span>
                 </div>
               )}
-              {isDigitalPayment && formData.transactionId && (
+              {(isFullDigitalPayment || isCodWithAdvance) && formData.transactionId && (
                 <div className="summary-row">
                   <span>Transaction ID:</span>
                   <span className="summary-val font-mono">{formData.transactionId.toUpperCase()}</span>
+                </div>
+              )}
+              {isCodWithAdvance && (
+                <div className="summary-row">
+                  <span>Remaining Due on Delivery:</span>
+                  <span className="summary-val font-bold">৳{dueOnDelivery.toLocaleString()}</span>
                 </div>
               )}
               <div className="summary-row total-row">
@@ -288,8 +312,8 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
                     value={formData.city}
                     onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                   >
-                    <option value="Dhaka">Inside Dhaka (৳80)</option>
-                    <option value="Outside Dhaka">Outside Dhaka (৳130)</option>
+                    <option value="Dhaka">Inside Dhaka (৳80 Delivery)</option>
+                    <option value="Outside Dhaka">Outside Dhaka (৳130 Delivery)</option>
                   </select>
                 </div>
 
@@ -303,21 +327,56 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
                     }}
                   >
                     <option value="cod">Cash on Delivery (COD)</option>
-                    <option value="bkash">bKash</option>
-                    <option value="nagad">Nagad</option>
-                    <option value="rocket">Rocket</option>
+                    <option value="bkash">bKash (Full Payment)</option>
+                    <option value="nagad">Nagad (Full Payment)</option>
+                    <option value="rocket">Rocket (Full Payment)</option>
                   </select>
                 </div>
               </div>
 
-              {/* Dynamic Payment Method Box with Copy & TrxID Input */}
-              {isDigitalPayment && activePayment && (
+              {/* OUTSIDE DHAKA COD NOTICE & ADVANCE PAYMENT BOX */}
+              {isCodWithAdvance && (
+                <div className="advance-notice-box">
+                  <div className="advance-notice-header">
+                    <span className="advance-notice-badge">Notice</span>
+                    <h4>ঢাকার বাইরে ক্যাশ অন ডেলিভারিতে ৳১৩০ অগ্রিম প্রযোজ্য</h4>
+                  </div>
+                  <p className="advance-notice-desc">
+                    ঢাকার বাইরে পার্সেল নিশ্চিত করতে ডেলিভারি চার্জ <strong>৳১৩০ অগ্রিম</strong> পরিশোধ করতে হবে। বাকি <strong>৳{dueOnDelivery.toLocaleString()}</strong> পণ্য হাতে পেয়ে ক্যাশ অন ডেলিভারিতে পরিশোধ করবেন।
+                  </p>
+
+                  <div className="advance-select-row">
+                    <label>অগ্রিম প্রদানের মাধ্যম বেছে নিন:</label>
+                    <div className="advance-method-pills">
+                      {['bkash', 'nagad', 'rocket'].map((method) => (
+                        <button
+                          key={method}
+                          type="button"
+                          className={`advance-pill ${formData.advanceMethod === method ? 'active' : ''}`}
+                          style={{ borderColor: formData.advanceMethod === method ? PAYMENT_INFO[method].color : undefined }}
+                          onClick={() => setFormData({ ...formData, advanceMethod: method, transactionId: '' })}
+                        >
+                          <span className="pill-dot" style={{ backgroundColor: PAYMENT_INFO[method].color }} />
+                          {PAYMENT_INFO[method].name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Dynamic Payment Method Box with Copy & TrxID Input (For Full Digital Payment OR Outside Dhaka COD Advance) */}
+              {(isFullDigitalPayment || isCodWithAdvance) && activePayment && (
                 <div className="payment-guide-box">
                   <div className="payment-guide-header">
                     <span className="payment-badge" style={{ backgroundColor: activePayment.color }}>
                       {activePayment.name}
                     </span>
-                    <span className="payment-guide-note">{activePayment.instructions}</span>
+                    <span className="payment-guide-note">
+                      {isCodWithAdvance 
+                        ? `ডেলিভারি চার্জ অগ্রিম ৳১৩০ নিচের ${activePayment.name} পার্সোনাল নাম্বারে Send Money করুন:`
+                        : activePayment.instructions}
+                    </span>
                   </div>
 
                   <div className="payment-number-card">
@@ -335,7 +394,9 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
                   </div>
 
                   <div className="form-group trx-input-group">
-                    <label>Transaction ID (TrxID) *</label>
+                    <label>
+                      {isCodWithAdvance ? 'ডেলিভারি চার্জ পেমেন্টের Transaction ID (TrxID) *' : 'Transaction ID (TrxID) *'}
+                    </label>
                     <input
                       type="text"
                       required
@@ -344,7 +405,15 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
                       onChange={(e) => setFormData({ ...formData, transactionId: e.target.value })}
                     />
                     <small className="trx-hint">
-                      Send <strong>৳{grandTotal.toLocaleString()}</strong> to the number above and paste the transaction ID here.
+                      {isCodWithAdvance ? (
+                        <>
+                          উপরের নাম্বারে অগ্রিম <strong>৳১৩০</strong> পাঠিয়ে ট্রানজেকশন আইডি এখানে লিখুন। ডেলিভারির সময় বাকি <strong>৳{dueOnDelivery.toLocaleString()}</strong> পরিশোধ করবেন।
+                        </>
+                      ) : (
+                        <>
+                          Send <strong>৳{grandTotal.toLocaleString()}</strong> to the number above and paste the transaction ID here.
+                        </>
+                      )}
                     </small>
                   </div>
                 </div>
@@ -423,10 +492,26 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
                   <span>Total Payable:</span>
                   <span className="payable-num">৳{grandTotal.toLocaleString()}</span>
                 </div>
+                {isCodWithAdvance && (
+                  <div className="cost-row advance-breakdown-row">
+                    <span>Advance Delivery Charge:</span>
+                    <span className="advance-num">৳130 (Paid via {PAYMENT_INFO[formData.advanceMethod]?.name})</span>
+                  </div>
+                )}
+                {isCodWithAdvance && (
+                  <div className="cost-row due-breakdown-row">
+                    <span>Cash on Delivery Due:</span>
+                    <span className="due-num">৳{dueOnDelivery.toLocaleString()}</span>
+                  </div>
+                )}
               </div>
 
               <button type="submit" className="place-order-btn" disabled={isSubmitting}>
-                {isSubmitting ? 'Processing Order...' : `Confirm Order — ৳${grandTotal.toLocaleString()}`}
+                {isSubmitting
+                  ? 'Processing Order...'
+                  : isCodWithAdvance
+                  ? `Confirm Order (Pay ৳130 Now, ৳${dueOnDelivery.toLocaleString()} on Delivery)`
+                  : `Confirm Order — ৳${grandTotal.toLocaleString()}`}
               </button>
             </form>
           </div>

@@ -2595,6 +2595,121 @@ a.nav-logo:hover img {
   border-color: var(--sage);
 }
 
+/* Advance Notice Box (Outside Dhaka COD) */
+.advance-notice-box {
+  background: var(--sage-tint);
+  border: 1px solid var(--sage);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: fadeIn 0.3s ease;
+}
+
+.advance-notice-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.advance-notice-badge {
+  background: var(--sage);
+  color: var(--bg-primary);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  padding: 3px 8px;
+  border-radius: 3px;
+}
+
+.advance-notice-header h4 {
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.advance-notice-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.advance-notice-desc strong {
+  color: var(--text-primary);
+}
+
+.advance-select-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.advance-select-row label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+}
+
+.advance-method-pills {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.advance-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border-medium);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.advance-pill:hover {
+  transform: translateY(-2px);
+  border-color: var(--sage);
+}
+
+.advance-pill.active {
+  border-width: 1.5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.advance-pill .pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.advance-breakdown-row {
+  color: var(--sage);
+  font-weight: 600;
+  font-size: 0.82rem;
+}
+
+.due-breakdown-row {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-top: 1px dashed var(--border-subtle);
+  padding-top: 6px;
+  margin-top: 4px;
+}
+
 .trx-input-group {
   margin-top: 2px;
 }
