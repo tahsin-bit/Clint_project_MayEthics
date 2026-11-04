@@ -157,6 +157,7 @@ export default function CheckoutModal({ open, onClose, items, total, onOrderSucc
           notes: formData.notes,
           paymentMethod: paymentLabel,
           transactionId: formData.transactionId || 'N/A',
+          promoCode: appliedPromo ? appliedPromo.code.toUpperCase() : 'NONE',
           items: items,
           total: grandTotal,
         }),

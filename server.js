@@ -62,6 +62,7 @@ async function ensureHeaders() {
               'Full Address',
               'Items Details',
               'Total Amount (BDT)',
+              'Promo Code',
               'Payment Mode',
               'Transaction ID (TrxID)',
               'Order Notes'
@@ -120,6 +121,7 @@ app.post('/api/orders', async (req, res) => {
       city,
       items,
       total,
+      promoCode,
       paymentMethod,
       transactionId,
       notes,
@@ -142,6 +144,7 @@ app.post('/api/orders', async (req, res) => {
       address || '',
       itemsSummary,
       total || 0,
+      promoCode || 'NONE',
       paymentMethod || 'COD',
       transactionId || 'N/A',
       notes || ''
@@ -149,7 +152,7 @@ app.post('/api/orders', async (req, res) => {
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'Orders!A:K',
+      range: 'Orders!A:L',
       valueInputOption: 'USER_ENTERED',
       insertDataOption: 'INSERT_ROWS',
       requestBody: {
