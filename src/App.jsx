@@ -20,7 +20,7 @@ const PRODUCTS = [
     id: 1,
     name: 'MayEthics Heavyweight Crewneck',
     price: 1490,
-    originalPrice: 1650,
+    originalPrice: 1600,
     description: 'Engineered with 350+ GSM premium Interlock Fabric. Cut in a modern oversized boxy fit with dropped shoulders and heavy ribbing.',
     flatImage: '/images/MayEthics_LoGo-removebg-preview.png',
     colors: [
@@ -242,7 +242,7 @@ function App() {
         isDark={isDark}
         onToggleTheme={toggleTheme}
       />
-      
+
       <main>
         {activePage === 'contact' ? (
           <ContactPage onBackToHome={handleBackToHome} />
