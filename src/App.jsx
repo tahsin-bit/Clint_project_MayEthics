@@ -46,8 +46,8 @@ const PRODUCTS = [
         dualModelImage: '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM3.jpeg',
       },
       {
-        name: 'Burgundy Plum',
-        hex: '#4F3547',
+        name: 'Dark Chocolate',
+        hex: '#3D2821',
         modelImage: '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM5.jpeg',
         flatImage: '/images/MayEthics_LoGo-removebg-preview.png',
         dualModelImage: '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM5.jpeg',
@@ -101,14 +101,14 @@ const COLLECTION = [
   },
   {
     id: 104,
-    name: 'Burgundy Plum Heavyweight',
-    colorName: 'Burgundy Plum',
+    name: 'Dark Chocolate Heavyweight',
+    colorName: 'Dark Chocolate',
     price: 1500,
     originalPrice: 1650,
     flatImage: '/images/MayEthics_LoGo-removebg-preview.png',
     modelImage: '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM5.jpeg',
     dualImage: '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM5.jpeg',
-    hex: '#4F3547',
+    hex: '#3D2821',
   },
   {
     id: 105,
