@@ -3,32 +3,27 @@ import { useScrollReveal } from '../hooks';
 export default function Lookbook() {
   const sectionRef = useScrollReveal(0.05);
 
-  const row1Images = [
-    '/images/Burgundy_Streetwear_Front_and_Back_Views-removebg-preview.png',
-    '/images/Minimal_Charcoal_Sweatshirt_Lookbook-removebg-preview.png',
-    '/images/Cream_Sweatshirt_Cargo_Lookbook_Views-removebg-preview.png',
-    '/images/Sky-Blue_Sweatshirt_Front_and_Back_View-removebg-preview.png',
-    '/images/Front_and_Back_Streetwear_Lookbook-removebg-preview.png',
-    // Duplicate for seamless loop
-    '/images/Burgundy_Streetwear_Front_and_Back_Views-removebg-preview.png',
-    '/images/Minimal_Charcoal_Sweatshirt_Lookbook-removebg-preview.png',
-    '/images/Cream_Sweatshirt_Cargo_Lookbook_Views-removebg-preview.png',
-    '/images/Sky-Blue_Sweatshirt_Front_and_Back_View-removebg-preview.png',
-    '/images/Front_and_Back_Streetwear_Lookbook-removebg-preview.png',
+  const images = [
+    '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM.jpeg',
+    '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM2.jpeg',
+    '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM3.jpeg',
+    '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM5.jpeg',
+    '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM11.jpeg',
   ];
 
+  // Repeat for smooth infinite marquee animation
+  const row1Images = [...images, ...images];
   const row2Images = [
-    '/images/Dual-View_Charcoal_Streetwear_Outfit-removebg-preview.png',
-    '/images/Front_and_Back_Streetwear_Lookbook-removebg-preview.png',
-    '/images/Sky-Blue_Sweatshirt_Front_and_Back_View-removebg-preview.png',
-    '/images/Burgundy_Streetwear_Front_and_Back_Views-removebg-preview.png',
-    '/images/Cream_Sweatshirt_Cargo_Lookbook_Views-removebg-preview.png',
-    // Duplicate for seamless loop
-    '/images/Dual-View_Charcoal_Streetwear_Outfit-removebg-preview.png',
-    '/images/Front_and_Back_Streetwear_Lookbook-removebg-preview.png',
-    '/images/Sky-Blue_Sweatshirt_Front_and_Back_View-removebg-preview.png',
-    '/images/Burgundy_Streetwear_Front_and_Back_Views-removebg-preview.png',
-    '/images/Cream_Sweatshirt_Cargo_Lookbook_Views-removebg-preview.png',
+    '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM2.jpeg',
+    '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM5.jpeg',
+    '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM.jpeg',
+    '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM11.jpeg',
+    '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM3.jpeg',
+    '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM2.jpeg',
+    '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM5.jpeg',
+    '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM.jpeg',
+    '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM11.jpeg',
+    '/images/WhatsApp Image 2026-11-24 at 8.03.51 PM3.jpeg',
   ];
 
   return (

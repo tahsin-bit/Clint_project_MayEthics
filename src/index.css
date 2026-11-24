@@ -1650,9 +1650,10 @@ a.nav-logo:hover img {
 }
 
 .lookbook-image img {
-  width: 90%;
-  height: auto;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
   transition: transform 0.6s var(--ease-out-expo);
 }
 
