@@ -10,7 +10,7 @@ export default function Hero() {
       <div className="hero-video-container">
         <video
           className="hero-bg-video"
-          src="/images/Video Project.mp4"
+          src="/images/Video Project 1.mp4"
           autoPlay
           loop
           muted
