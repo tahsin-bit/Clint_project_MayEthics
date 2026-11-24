@@ -2,11 +2,10 @@ export default function SizeGuideModal({ open, onClose }) {
   if (!open) return null;
 
   const sizeChart = [
-    { size: 'S', chest: '38" - 40"', length: '27"', shoulder: '20"', sleeve: '23.5"' },
-    { size: 'M', chest: '40" - 42"', length: '28"', shoulder: '21"', sleeve: '24.0"' },
-    { size: 'L', chest: '42" - 44"', length: '29"', shoulder: '22"', sleeve: '24.5"' },
-    { size: 'XL', chest: '44" - 46"', length: '30"', shoulder: '23"', sleeve: '25.0"' },
-    { size: 'XXL', chest: '46" - 48"', length: '31"', shoulder: '24"', sleeve: '25.5"' },
+    { size: 'M', length: '24"', chest: '46"', sleeve: '23"', shoulder: '25"' },
+    { size: 'L', length: '25"', chest: '48"', sleeve: '24"', shoulder: '26"' },
+    { size: 'XL', length: '26"', chest: '50"', sleeve: '25"', shoulder: '27"' },
+    { size: 'XXL', length: '27"', chest: '52"', sleeve: '26"', shoulder: '28"' },
   ];
 
   return (
