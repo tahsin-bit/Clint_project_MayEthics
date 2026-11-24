@@ -47,8 +47,8 @@ export default function FeaturedProduct({ product, onAddToCart, onBack, onOpenSi
         <p className="section-label">Signature Collection</p>
         <h2 className="section-title">The Heavyweight Crewneck</h2>
         <p className="section-desc">
-          Designed from the ground up with 400 GSM brushed fleece. 
-          Choose your color, switch between model and garment views, and find your fit.
+          Designed from the ground up with 350+ GSM premium Interlock Fabric in an oversized boxy fit. 
+          Choose your color and find your perfect size.
         </p>
       </div>
 

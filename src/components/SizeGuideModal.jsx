@@ -19,7 +19,7 @@ export default function SizeGuideModal({ open, onClose }) {
           <span className="size-guide-tag">Specification & Sizing</span>
           <h2>Size Chart</h2>
           <p>
-            MayEthics heavyweight sweatshirts are cut in an intentional relaxed streetwear silhouette with dropped shoulders. Measurements are in inches.
+            MayEthics 350+ GSM Interlock Fabric sweatshirts are crafted in an Oversized Boxy Fit with dropped shoulders. Measurements are in inches.
           </p>
         </div>
 

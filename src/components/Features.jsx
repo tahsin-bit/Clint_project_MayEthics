@@ -22,7 +22,7 @@ export default function Features() {
         </svg>
       ),
       title: 'Premium Fabrics',
-      desc: '400GSM heavyweight cotton blend. Brushed interior for unmatched comfort. Built to last through every season.',
+      desc: '350+ GSM heavyweight Interlock Fabric. Engineered for unmatched comfort, structure, and durability.',
     },
     {
       icon: (
