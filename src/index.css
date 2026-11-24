@@ -911,9 +911,10 @@ a.nav-logo:hover img {
 }
 
 .product-display-img {
-  width: 90%;
-  height: 90%;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
   transition: transform 0.6s var(--ease-out-expo), opacity 0.4s;
 }
 
@@ -1000,14 +1001,15 @@ a.nav-logo:hover img {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 8px;
+  padding: 0;
   position: relative;
 }
 
 .product-thumb img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  object-position: top center;
 }
 
 .product-thumb .thumb-color-dot {
@@ -1392,13 +1394,14 @@ a.nav-logo:hover img {
   align-items: center;
   justify-content: center;
   background: linear-gradient(180deg, var(--bg-card) 0%, var(--bg-secondary) 100%);
-  padding: 20px;
+  padding: 0;
 }
 
 .collection-card-image img {
-  width: 85%;
-  height: auto;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
   transition: opacity 0.5s var(--ease-out-expo), transform 0.6s var(--ease-out-expo);
 }
 
